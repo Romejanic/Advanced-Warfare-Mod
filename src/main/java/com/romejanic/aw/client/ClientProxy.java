@@ -2,7 +2,6 @@ package com.romejanic.aw.client;
 
 import com.romejanic.aw.AdvancedWarfare;
 import com.romejanic.aw.client.item.ItemRendererManager;
-import com.romejanic.aw.client.item.renderers.ItemRendererAtlasExo;
 import com.romejanic.aw.client.model.ModelAtlasExo;
 import com.romejanic.aw.client.model.ModelSentinelExo;
 import com.romejanic.aw.common.CommonProxy;
