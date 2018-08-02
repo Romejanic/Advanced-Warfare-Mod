@@ -2,6 +2,7 @@ package com.romejanic.aw.client;
 
 import com.romejanic.aw.AdvancedWarfare;
 import com.romejanic.aw.client.item.ItemRendererManager;
+import com.romejanic.aw.client.item.renderers.ItemRendererAK12;
 import com.romejanic.aw.client.model.ModelAtlasExo;
 import com.romejanic.aw.client.model.ModelSentinelExo;
 import com.romejanic.aw.common.CommonProxy;
@@ -35,6 +36,8 @@ public class ClientProxy extends CommonProxy {
 	@Override
 	public void initClient() {
 		ModContent content = AdvancedWarfare.content;
+		this.itemRenderers.registerItem(content.ak12, new ItemRendererAK12());
+		
 		MinecraftForge.EVENT_BUS.register(new ClientEvents());
 	}
 	
@@ -44,6 +47,7 @@ public class ClientProxy extends CommonProxy {
 		ModelLoader.setCustomModelResourceLocation(content.atlasExo, 0, new ModelResourceLocation("aw:atlas_exo", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(content.sentinelExo, 0, new ModelResourceLocation("aw:sentinel_exo", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(content.kvaExo, 0, new ModelResourceLocation("aw:kva_exo", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(content.ak12, 0, new ModelResourceLocation("aw:ak12", "inventory"));
 	}
 	
 	@Override
