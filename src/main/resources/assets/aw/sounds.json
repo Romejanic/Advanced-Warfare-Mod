@@ -2,5 +2,10 @@
     "exo_hover": {
         "category": "player",
         "sounds": [ "aw:exo_hover" ]
+    },
+    
+    "gun_ak12_fire": {
+        "category": "player",
+        "sounds": [ "aw:gun_ak12_fire" ]
     }
 }

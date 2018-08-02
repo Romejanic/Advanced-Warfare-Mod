@@ -1,5 +1,9 @@
 item.aw.atlas_exo.name=Atlas Exo
 item.aw.sentinel_exo.name=Sentinel Exo
 item.aw.kva_exo.name=KVA Exo
+item.aw.ak12.name=AK12
+
+itemGroup.aw=Advanced Warfare
 
 death.aw.groundslam=%1$s was ground slammed by %2$s
+death.aw.shot=%1$s was shot by %2$s using %3$s
