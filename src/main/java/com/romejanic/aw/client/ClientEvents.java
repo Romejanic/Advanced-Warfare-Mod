@@ -9,10 +9,14 @@ import com.romejanic.aw.common.network.PacketExoAction;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.model.ModelBiped;
+import net.minecraft.client.model.ModelPlayer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumHand;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -53,9 +57,9 @@ public class ClientEvents {
 	
 	@SubscribeEvent
 	public void clientTick(ClientTickEvent event) {
-		if(event.type == TickEvent.Type.PLAYER && event.phase == TickEvent.Phase.END) {
+		if(event.phase == TickEvent.Phase.END) {
 			EntityPlayer player = mc.player;
-			if(mc.gameSettings.keyBindAttack.isKeyDown() && !player.isSneaking()) {
+			if(player != null && mc.gameSettings.keyBindAttack.isKeyDown() && !player.isSneaking()) {
 				ItemStack mainHand = player.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND);
 				if(mainHand != null && mainHand.getItem() instanceof ItemGun) {
 					AdvancedWarfare.proxy.tickGun(mainHand, player, player.world, (ItemGun)mainHand.getItem());
@@ -70,6 +74,15 @@ public class ClientEvents {
 			if(this.exoJumped && mc.player.onGround) {
 				this.exoJumped = false;
 			}
+		}
+	}
+	
+	@SubscribeEvent
+	public void renderPlayer(RenderPlayerEvent.Pre event) {
+		ItemStack mainHand = event.getEntityPlayer().getHeldItem(EnumHand.MAIN_HAND);
+		if(mainHand != null && mainHand.getItem() instanceof ItemGun) {
+			ModelPlayer model  = event.getRenderer().getMainModel();
+			model.rightArmPose = ModelBiped.ArmPose.BOW_AND_ARROW; // TODO: get this working
 		}
 	}
 	

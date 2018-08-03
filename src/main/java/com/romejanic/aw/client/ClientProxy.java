@@ -9,6 +9,7 @@ import com.romejanic.aw.common.CommonProxy;
 import com.romejanic.aw.common.ModContent;
 import com.romejanic.aw.common.item.ItemExo.EnumExoType;
 import com.romejanic.aw.common.item.ItemGun;
+import com.romejanic.aw.common.network.PacketFireGun;
 import com.romejanic.aw.common.network.PacketUpdatePlayerVelocity;
 
 import net.minecraft.client.Minecraft;
@@ -70,7 +71,8 @@ public class ClientProxy extends CommonProxy {
 			stack.setTagCompound(tag);
 			return;
 		}
-		
+		gun.fire(stack, player, world);
+		AdvancedWarfare.network.sendToServer(new PacketFireGun(player));
 	}
 	
 	public ModelBiped getExoModel(EnumExoType type, ModelBiped _default) {

@@ -4,6 +4,7 @@ import com.romejanic.aw.common.CommonProxy;
 import com.romejanic.aw.common.EventListener;
 import com.romejanic.aw.common.ModContent;
 import com.romejanic.aw.common.network.PacketExoAction;
+import com.romejanic.aw.common.network.PacketFireGun;
 import com.romejanic.aw.common.network.PacketUpdatePlayerVelocity;
 
 import net.minecraftforge.common.MinecraftForge;
@@ -45,6 +46,7 @@ public class AdvancedWarfare {
 		network = NetworkRegistry.INSTANCE.newSimpleChannel(modid);
 		network.registerMessage(PacketExoAction.Handler.class, PacketExoAction.class, 0, Side.SERVER);
 		network.registerMessage(PacketUpdatePlayerVelocity.Handler.class, PacketUpdatePlayerVelocity.class, 1, Side.CLIENT);
+		network.registerMessage(PacketFireGun.Handler.class, PacketFireGun.class, 2, Side.SERVER);
 	}
 	
 	@EventHandler
