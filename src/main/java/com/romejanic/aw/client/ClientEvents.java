@@ -1,13 +1,10 @@
 package com.romejanic.aw.client;
 
-import java.util.HashMap;
-import java.util.UUID;
-
 import com.romejanic.aw.AdvancedWarfare;
 import com.romejanic.aw.common.ModContent;
 import com.romejanic.aw.common.exo.ExoAction;
 import com.romejanic.aw.common.exo.ExoHandler;
-import com.romejanic.aw.common.item.ItemExo;
+import com.romejanic.aw.common.item.ItemGun;
 import com.romejanic.aw.common.network.PacketExoAction;
 
 import net.minecraft.client.Minecraft;
@@ -20,6 +17,8 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
 
 public class ClientEvents {
 
@@ -48,6 +47,19 @@ public class ClientEvents {
 			EntityPlayer player = mc.player;
 			if(ExoHandler.entityHasExo(player) && !player.onGround) {
 				AdvancedWarfare.network.sendToServer(new PacketExoAction(player.getUniqueID(), ExoAction.GROUND_SLAM));
+			}
+		}
+	}
+	
+	@SubscribeEvent
+	public void clientTick(ClientTickEvent event) {
+		if(event.type == TickEvent.Type.PLAYER && event.phase == TickEvent.Phase.END) {
+			EntityPlayer player = mc.player;
+			if(mc.gameSettings.keyBindAttack.isKeyDown() && !player.isSneaking()) {
+				ItemStack mainHand = player.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND);
+				if(mainHand != null && mainHand.getItem() instanceof ItemGun) {
+					AdvancedWarfare.proxy.tickGun(mainHand, player, player.world, (ItemGun)mainHand.getItem());
+				}
 			}
 		}
 	}

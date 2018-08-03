@@ -13,6 +13,11 @@ public class ItemAK12 extends ItemGun {
 
 	@Override
 	protected int getFireRate() {
+		return 13;
+	}
+
+	@Override
+	protected int getMaxAmmo() {
 		return 30;
 	}
 

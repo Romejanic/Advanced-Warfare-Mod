@@ -8,12 +8,16 @@ import com.romejanic.aw.client.model.ModelSentinelExo;
 import com.romejanic.aw.common.CommonProxy;
 import com.romejanic.aw.common.ModContent;
 import com.romejanic.aw.common.item.ItemExo.EnumExoType;
+import com.romejanic.aw.common.item.ItemGun;
 import com.romejanic.aw.common.network.PacketUpdatePlayerVelocity;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
@@ -56,6 +60,17 @@ public class ClientProxy extends CommonProxy {
 		player.motionX = packet.getMotionX();
 		player.motionY = packet.getMotionY();
 		player.motionZ = packet.getMotionZ();
+	}
+	
+	@Override
+	public void tickGun(ItemStack stack, EntityPlayer player, World world, ItemGun gun) {
+		NBTTagCompound tag = gun.getCompoundTagFromStack(stack);
+		if(!gun.isReadyToFire(stack)) {
+			tag.setInteger("fireCooldown", tag.getInteger("fireCooldown") - 1);
+			stack.setTagCompound(tag);
+			return;
+		}
+		
 	}
 	
 	public ModelBiped getExoModel(EnumExoType type, ModelBiped _default) {

@@ -3,16 +3,19 @@ package com.romejanic.aw.common;
 import java.util.Arrays;
 
 import com.romejanic.aw.AdvancedWarfare;
-import com.romejanic.aw.common.item.ItemExo.EnumExoType;
+import com.romejanic.aw.common.item.ItemGun;
 import com.romejanic.aw.common.network.PacketUpdatePlayerVelocity;
 
-import net.minecraft.client.model.ModelBiped;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.common.ModMetadata;
 
 public class CommonProxy {
 
 	public void initClient() {}
+	public void tickGun(ItemStack stack, EntityPlayer player, World world, ItemGun item) {}
 	public void setClientPlayerVelocity(PacketUpdatePlayerVelocity packet) {}
 	
 	public void loadModInfo(ModMetadata data) {
