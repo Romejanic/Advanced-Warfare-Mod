@@ -14,6 +14,7 @@ import net.minecraft.client.model.ModelPlayer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumHand;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
@@ -26,7 +27,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
 
 public class ClientEvents {
 
-	private static final boolean DEBUG = false;
+	private static final boolean DEBUG = true;
 	
 	private final Minecraft mc;
 	private final ModContent content;
@@ -99,6 +100,12 @@ public class ClientEvents {
 			fr.drawStringWithShadow("onGround: " + p.onGround, 10, 20, 0xFFFFFF);
 			fr.drawStringWithShadow("motionY: " + p.motionY, 10, 30, 0xFFFFFF);
 			fr.drawStringWithShadow("exoJumped: " + exoJumped, 10, 40, 0xFFFFFF);
+			
+			ItemStack mainHand = p.getHeldItem(EnumHand.MAIN_HAND);
+			if(mainHand != null && mainHand.getItem() instanceof ItemGun) {
+				NBTTagCompound nbt = ((ItemGun)mainHand.getItem()).getCompoundTagFromStack(mainHand);
+				fr.drawStringWithShadow("fireCooldown: " + nbt.getInteger("fireCooldown"), 10, 50, 0xFFFFFF);
+			}
 		}
 	}
 	

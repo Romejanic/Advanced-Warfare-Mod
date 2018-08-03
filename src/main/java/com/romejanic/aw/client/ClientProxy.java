@@ -67,8 +67,6 @@ public class ClientProxy extends CommonProxy {
 	public void tickGun(ItemStack stack, EntityPlayer player, World world, ItemGun gun) {
 		NBTTagCompound tag = gun.getCompoundTagFromStack(stack);
 		if(!gun.isReadyToFire(stack)) {
-			tag.setInteger("fireCooldown", tag.getInteger("fireCooldown") - 1);
-			stack.setTagCompound(tag);
 			return;
 		}
 		gun.fire(stack, player, world);

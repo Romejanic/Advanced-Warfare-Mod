@@ -32,14 +32,19 @@ public abstract class ItemGun extends Item {
 		if(!isReadyToFire(stack) || (getRemainingAmmo(stack) <= 0 && !player.isCreative())) {
 			return;
 		}
-
 		tag.setInteger("remainingAmmo", tag.getInteger("remainingAmmo") - 1);
 		tag.setInteger("fireCooldown", getFireRateTicks());
 		stack.setTagCompound(tag);
 
 		if(!world.isRemote) {
-			System.out.println("[server] fire bullet");
-			world.playSound(null, player.posX, player.posY, player.posZ, AWSounds.AK12_FIRE, SoundCategory.PLAYERS, 1f, 1f);
+			float frp    = getFireRatePartial();
+			int nBullets = 1;
+			if(frp < 1f) {
+				nBullets = Math.round(1f / frp);
+			}
+			
+			// TODO: loop through nbullets and spawn bullets
+			world.playSound(null, player.posX, player.posY, player.posZ, getFireSound(), SoundCategory.PLAYERS, 1f, 1f);
 		}
 	}
 
@@ -70,7 +75,28 @@ public abstract class ItemGun extends Item {
 	}
 
 	private int getFireRateTicks() {
-		return Math.round(20f / (float)getFireRate());
+		return Math.max(1, Math.round(getFireRatePartial()));
+	}
+	
+	private float getFireRatePartial() {
+		return Math.max(0f, 20f / (float)getFireRate());
+	}
+	
+	@Override
+	public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
+		NBTTagCompound nbt = getCompoundTagFromStack(stack);
+		if(nbt.getInteger("fireCooldown") > 0) {
+			nbt.setInteger("fireCooldown", nbt.getInteger("fireCooldown") - 1);
+			stack.setTagCompound(nbt);
+		}
+    }
+	
+	@Override
+	public void onCreated(ItemStack stack, World worldIn, EntityPlayer playerIn) {
+		NBTTagCompound nbt = getCompoundTagFromStack(stack);
+		nbt.setInteger("fireCooldown", 0);
+		nbt.setInteger("remainingAmmo", getMaxAmmo());
+		stack.setTagCompound(nbt);
 	}
 	
 	@Override
